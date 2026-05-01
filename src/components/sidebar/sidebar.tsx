@@ -29,7 +29,7 @@ export default function Sidebar() {
                   src={item.src}
                   alt="day's playlist"
                   width={250}
-                  height={170}
+                  height={150}
                   style={{ width: "100%", height: "auto" }}
                 />
               </Link>

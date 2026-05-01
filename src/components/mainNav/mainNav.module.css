@@ -43,9 +43,12 @@
 
 .nav__menu {
   display: block;
-  visibility: visible;
+  visibility: hidden;
 }
 
+.active {
+  visibility: visible;
+}
 .menu__list {
   padding: 18px 0 10px 0;
 }

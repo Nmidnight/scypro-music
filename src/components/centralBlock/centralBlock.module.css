@@ -119,10 +119,61 @@
   border: 1px solid #ffffff;
   border-radius: 60px;
   padding: 6px 20px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 .button:not(:last-child) {
   margin-right: 10px;
+}
+
+.active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+}
+
+.filterWrapper {
+  position: relative;
+  margin-right: 10px;
+}
+
+.filterWrapper:last-child {
+  margin-right: 0;
+}
+
+.filterDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  padding: 34px;
+  border-radius: 12px;
+  background-color: #313131;
+  z-index: 10;
+}
+
+.filterList {
+  color: #ffffff;
+  display: flex;
+  gap: 28px;
+  height: max-content;
+  max-height: 237px;
+  overflow-y: auto;
+  flex-direction: column;
+  width: max-content;
+  max-width: 248px;
+}
+
+.filterList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filterList::-webkit-scrollbar-track {
+  background-color: rgba(75, 73, 73, 1);
+}
+
+.filterList::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
 }
 
 .content {
