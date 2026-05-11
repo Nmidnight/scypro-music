@@ -15,7 +15,7 @@ export default function Sidebar() {
         <p className={styles.personalName}>Sergey.Ivanov</p>
         <div className={styles.icon}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#logout"></use>
+            <use href="/img/icon/sprite.svg#logout"></use>
           </svg>
         </div>
       </div>

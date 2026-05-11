@@ -1,0 +1,153 @@
+.playlistItem {
+  width: 100%;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.playlistTrack {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.playlistTrack:focus-visible {
+  outline: 2px solid #ad61ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.trackTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 447px;
+  min-width: 0;
+}
+
+.dotWrap {
+  width: 16px;
+  height: 16px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ad61ff;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.dotVisible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dotPulse {
+  animation: dotPulse 1s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(173, 97, 255, 0.55);
+  }
+
+  50% {
+    opacity: 0.75;
+    transform: scale(0.88);
+    box-shadow: 0 0 0 6px rgba(173, 97, 255, 0);
+  }
+}
+
+.trackTitleImage {
+  width: 51px;
+  height: 51px;
+  padding: 16px;
+  background: #313131;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 17px;
+  flex-shrink: 0;
+}
+
+.trackTitleSvg {
+  width: 18px;
+  height: 17px;
+  fill: transparent;
+  stroke: #4e4e4e;
+}
+
+.trackTitleText {
+  min-width: 0;
+}
+
+.trackTitleLink {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+}
+
+.trackAuthor {
+  width: 321px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.trackAuthorLink {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  text-align: left;
+}
+
+.trackAlbum {
+  width: 245px;
+}
+
+.trackAlbumLink {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #696969;
+}
+
+.trackTime {
+  display: flex;
+  align-items: center;
+}
+
+.trackTimeSvg {
+  width: 14px;
+  height: 12px;
+  margin-right: 17px;
+  fill: transparent;
+  stroke: #696969;
+}
+
+.trackTimeText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: right;
+  color: #696969;
+}

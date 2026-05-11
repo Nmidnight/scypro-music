@@ -1,3 +1,11 @@
+.hiddenAudio {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .bar {
   position: absolute;
   bottom: 0;
@@ -99,6 +107,14 @@
 
 .btnPlay {
   margin-right: 23px;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.btnPlay:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .btnPlaySvg {
@@ -238,6 +254,10 @@
   line-height: 24px;
   color: #ffffff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 
 .trackAlbum {
@@ -253,6 +273,11 @@
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 
 .trackActions {
