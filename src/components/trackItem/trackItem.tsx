@@ -3,7 +3,10 @@
 import classNames from "classnames";
 
 import type { Track } from "@/mocks/tracks";
-import { setCurrentTrack } from "@/store/features/trackSlice";
+import {
+  selectCurrentTrack,
+  setCurrentTrack,
+} from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import styles from "./trackItem.module.css";
 
@@ -19,7 +22,7 @@ type TrackItemProps = {
 
 export default function TrackItem({ track }: TrackItemProps) {
   const dispatch = useAppDispatch();
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const currentTrack = useAppSelector(selectCurrentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   const isCurrent = currentTrack?._id === track._id;
