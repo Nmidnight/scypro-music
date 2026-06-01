@@ -119,212 +119,55 @@
   border: 1px solid #ffffff;
   border-radius: 60px;
   padding: 6px 20px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
 }
 
-.button:not(:last-child) {
+.active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+}
+
+.filterWrapper {
+  position: relative;
   margin-right: 10px;
 }
 
-.content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+.filterWrapper:last-child {
+  margin-right: 0;
 }
 
-.contentTitle {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  margin-bottom: 24px;
+.filterDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  padding: 34px;
+  border-radius: 12px;
+  background-color: #313131;
+  z-index: 10;
 }
 
-.playlist {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.playlistTitleCol {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 2px;
-  color: #696969;
-  text-transform: uppercase;
-}
-
-.playlistTitleSvg {
-  width: 12px;
-  height: 12px;
-  fill: transparent;
-  stroke: #696969;
-}
-
-.col01 {
-  width: 447px;
-}
-
-.col02 {
-  width: 321px;
-}
-
-.col03 {
-  width: 245px;
-}
-
-.col04 {
-  width: 60px;
-  text-align: end;
-}
-
-.playlistItem {
-  width: 100%;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.playlistTrack {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.trackTitle {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 447px;
-}
-
-.trackTitleImage {
-  width: 51px;
-  height: 51px;
-  padding: 16px;
-  background: #313131;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  margin-right: 17px;
-}
-
-.trackTitleSvg {
-  width: 18px;
-  height: 17px;
-  fill: transparent;
-  stroke: #4e4e4e;
-}
-
-.trackTitleText {
-  min-width: 0;
-}
-
-.trackTitleLink {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+.filterList {
   color: #ffffff;
-}
-
-.trackTitleSpan {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4e4e4e;
-}
-
-.trackAuthor {
-  width: 321px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+  gap: 28px;
+  height: max-content;
+  max-height: 237px;
+  overflow-y: auto;
+  flex-direction: column;
+  width: max-content;
+  max-width: 248px;
 }
 
-.trackAuthorLink {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #ffffff;
-  text-align: left;
+.filterList::-webkit-scrollbar {
+  width: 4px;
 }
 
-.trackAlbum {
-  width: 245px;
+.filterList::-webkit-scrollbar-track {
+  background-color: rgba(75, 73, 73, 1);
 }
 
-.trackAlbumLink {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #696969;
-}
-
-.trackTime {
-  display: flex;
-  align-items: center;
-}
-
-.trackTimeSvg {
-  width: 14px;
-  height: 12px;
-  margin-right: 17px;
-  fill: transparent;
-  stroke: #696969;
-}
-
-.trackTimeText {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: right;
-  color: #696969;
+.filterList::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
 }

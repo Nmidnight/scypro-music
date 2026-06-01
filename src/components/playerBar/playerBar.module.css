@@ -1,3 +1,11 @@
+.hiddenAudio {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .bar {
   position: absolute;
   bottom: 0;
@@ -16,10 +24,55 @@
   flex-direction: column;
 }
 
+.progressSection {
+  width: 100%;
+  padding: 8px 40px 12px;
+  box-sizing: border-box;
+}
+
+.progressTimes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.timeText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #696969;
+  font-variant-numeric: tabular-nums;
+}
+
 .playerProgress {
   width: 100%;
-  height: 5px;
+  height: 8px;
   background: #2e2e2e;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.playerProgress:focus-visible {
+  box-shadow: 0 0 0 2px rgba(173, 97, 255, 0.6);
+}
+
+.playerProgressFill {
+  height: 100%;
+  background: #ad61ff;
+  border-radius: 4px;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.modeActive .btnRepeatSvg path,
+.modeActive .btnShuffleSvg path {
+  fill: #ad61ff;
 }
 
 .playerBlock {
@@ -86,6 +139,15 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.btnPrev:disabled,
+.btnNext:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .btnPrev {
@@ -99,6 +161,14 @@
 
 .btnPlay {
   margin-right: 23px;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.btnPlay:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .btnPlaySvg {
@@ -121,6 +191,7 @@
 
 .btnRepeat {
   margin-right: 24px;
+  cursor: pointer;
 }
 
 .btnRepeatSvg {
@@ -137,6 +208,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .btnShuffleSvg {
@@ -238,6 +310,10 @@
   line-height: 24px;
   color: #ffffff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 
 .trackAlbum {
@@ -253,6 +329,11 @@
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
 }
 
 .trackActions {

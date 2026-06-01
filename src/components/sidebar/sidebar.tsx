@@ -15,7 +15,7 @@ export default function Sidebar() {
         <p className={styles.personalName}>Sergey.Ivanov</p>
         <div className={styles.icon}>
           <svg>
-            <use xlinkHref="/img/icon/sprite.svg#logout"></use>
+            <use href="/img/icon/sprite.svg#logout"></use>
           </svg>
         </div>
       </div>
@@ -29,7 +29,7 @@ export default function Sidebar() {
                   src={item.src}
                   alt="day's playlist"
                   width={250}
-                  height={170}
+                  height={150}
                   style={{ width: "100%", height: "auto" }}
                 />
               </Link>
