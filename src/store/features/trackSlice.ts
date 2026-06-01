@@ -1,14 +1,18 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { data } from "@/mocks/tracks";
-import type { Track } from "@/mocks/tracks";
+import { getAllTracks } from "@/api/tracksApi";
+import type { Track } from "@/types";
 
 export type TrackSliceState = {
+  allTracks: Track[];
   orderedPlaylist: Track[];
+  initialPlaylist: Track[];
   currentIndex: number;
   isPlaying: boolean;
   isShuffle: boolean;
   isRepeat: boolean;
+  isLoading: boolean;
+  error: string | null;
 };
 
 function shuffleCopy<T>(items: readonly T[]): T[] {
@@ -21,11 +25,15 @@ function shuffleCopy<T>(items: readonly T[]): T[] {
 }
 
 const initialState: TrackSliceState = {
-  orderedPlaylist: [...data],
+  allTracks: [],
+  orderedPlaylist: [],
+  initialPlaylist: [],
   currentIndex: -1,
   isPlaying: false,
   isShuffle: false,
   isRepeat: false,
+  isLoading: false,
+  error: null,
 };
 
 type TracksRoot = { tracks: TrackSliceState };
@@ -46,12 +54,43 @@ export const selectCanGoPrev = (state: TracksRoot): boolean => {
   return currentIndex > 0;
 };
 
+export const getTracks = createAsyncThunk<Track[], void, { rejectValue: string }>(
+  "tracks/getTracks",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getAllTracks();
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Ошибка загрузки треков",
+      );
+    }
+  },
+);
+
 const trackSlice = createSlice({
   name: "tracks",
   initialState,
   reducers: {
+    setPlaylist: (state, action: PayloadAction<Track[]>) => {
+      const currentId =
+        state.currentIndex >= 0
+          ? state.orderedPlaylist[state.currentIndex]?._id
+          : null;
+
+      state.initialPlaylist = action.payload;
+      state.orderedPlaylist = state.isShuffle
+        ? shuffleCopy(action.payload)
+        : action.payload;
+
+      state.currentIndex =
+        currentId != null
+          ? state.orderedPlaylist.findIndex((t) => t._id === currentId)
+          : -1;
+    },
     setCurrentTrack: (state, action: PayloadAction<Track>) => {
-      const idx = state.orderedPlaylist.findIndex((t) => t._id === action.payload._id);
+      const idx = state.orderedPlaylist.findIndex(
+        (t) => t._id === action.payload._id,
+      );
       if (idx !== -1) {
         state.currentIndex = idx;
         state.isPlaying = true;
@@ -66,7 +105,10 @@ const trackSlice = createSlice({
       }
     },
     nextTrack: (state) => {
-      if (state.currentIndex < 0 || state.currentIndex >= state.orderedPlaylist.length - 1) {
+      if (
+        state.currentIndex < 0 ||
+        state.currentIndex >= state.orderedPlaylist.length - 1
+      ) {
         return;
       }
       state.currentIndex += 1;
@@ -90,25 +132,42 @@ const trackSlice = createSlice({
     },
     toggleShuffle: (state) => {
       const prevId =
-        state.currentIndex >= 0 ? state.orderedPlaylist[state.currentIndex]._id : null;
+        state.currentIndex >= 0
+          ? state.orderedPlaylist[state.currentIndex]._id
+          : null;
       state.isShuffle = !state.isShuffle;
-      if (state.isShuffle) {
-        state.orderedPlaylist = shuffleCopy(state.orderedPlaylist);
-      } else {
-        state.orderedPlaylist = [...data];
-      }
+      state.orderedPlaylist = state.isShuffle
+        ? shuffleCopy(state.initialPlaylist)
+        : [...state.initialPlaylist];
       if (prevId != null) {
-        const idx = state.orderedPlaylist.findIndex((t) => t._id === prevId);
-        state.currentIndex = idx;
+        state.currentIndex = state.orderedPlaylist.findIndex(
+          (t) => t._id === prevId,
+        );
       }
     },
     toggleRepeat: (state) => {
       state.isRepeat = !state.isRepeat;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getTracks.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getTracks.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.allTracks = action.payload;
+      })
+      .addCase(getTracks.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? "Ошибка загрузки треков";
+      });
+  },
 });
 
 export const {
+  setPlaylist,
   setCurrentTrack,
   setIsPlaying,
   togglePlayback,

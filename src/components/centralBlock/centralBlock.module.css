@@ -171,3 +171,16 @@
 .filterList::-webkit-scrollbar-thumb {
   background-color: #ffffff;
 }
+
+.stateMessage {
+  margin-top: 40px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #ffffff;
+}
+
+.stateError {
+  color: #ff6f6f;
+}

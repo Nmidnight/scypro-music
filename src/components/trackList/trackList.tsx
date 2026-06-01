@@ -1,5 +1,5 @@
 import TrackItem from "@/components/trackItem/trackItem";
-import type { Track } from "@/mocks/tracks";
+import type { Track } from "@/types";
 import styles from "./trackList.module.css";
 
 type TrackListProps = {
