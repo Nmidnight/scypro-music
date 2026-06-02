@@ -1,16 +1,19 @@
-import styles from "./page.module.css";
-import CentralBlock from "@/components/centralBlock/centralBlock";
 import MainNav from "@/components/mainNav/mainNav";
 import PlayerBar from "@/components/playerBar/playerBar";
 import Sidebar from "@/components/sidebar/sidebar";
+import styles from "./layout.module.css";
 
-export default function Home() {
+export default function MainLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <main className={styles.main}>
           <MainNav />
-          <CentralBlock />
+          {children}
           <Sidebar />
         </main>
         <PlayerBar />

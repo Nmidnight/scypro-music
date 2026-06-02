@@ -282,9 +282,7 @@ export default function PlayerBar() {
                 </div>
                 <div className={styles.trackAlbum}>
                   <Link className={styles.trackAlbumLink} href="#">
-                    {currentTrack
-                      ? `${currentTrack.author} — ${currentTrack.album}`
-                      : ""}
+                    {currentTrack?.author ?? ""}
                   </Link>
                 </div>
               </div>

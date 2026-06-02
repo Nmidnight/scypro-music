@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 
-import type { Track } from "@/mocks/tracks";
+import type { Track } from "@/types";
 import {
   selectCurrentTrack,
   setCurrentTrack,

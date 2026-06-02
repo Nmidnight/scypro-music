@@ -3,30 +3,49 @@
 import { useMemo, useState } from "react";
 import classNames from "classnames";
 
-import { data } from "@/mocks/tracks";
 import TrackList from "@/components/trackList/trackList";
+import type { Track } from "@/types";
 import styles from "./centralBlock.module.css";
 
 type FilterName = "author" | "release_date" | "genre" | null;
 
-export default function CentralBlock() {
+type CentralBlockProps = {
+  title: string;
+  tracks: Track[];
+  isLoading: boolean;
+  error: string | null;
+};
+
+export default function CentralBlock({
+  title,
+  tracks,
+  isLoading,
+  error,
+}: CentralBlockProps) {
   const [activeFilter, setActiveFilter] = useState<FilterName>(null);
 
   const uniqueAuthors = useMemo(
-    () => Array.from(new Set(data.map((track) => track.author))),
-    [],
+    () => Array.from(new Set(tracks.map((track) => track.author))),
+    [tracks],
   );
   const uniqueGenres = useMemo(
-    () => Array.from(new Set(data.flatMap((track) => track.genre))),
-    [],
+    () => Array.from(new Set(tracks.flatMap((track) => track.genre))),
+    [tracks],
   );
   const yearsList = useMemo(
-    () => Array.from(new Set(data.map((track) => new Date(track.release_date).getFullYear()))),
-    [],
+    () =>
+      Array.from(
+        new Set(
+          tracks.map((track) => new Date(track.release_date).getFullYear()),
+        ),
+      ),
+    [tracks],
   );
 
   const toggleFilter = (filterName: Exclude<FilterName, null>) => {
-    setActiveFilter((prevFilter) => (prevFilter === filterName ? null : filterName));
+    setActiveFilter((prevFilter) =>
+      prevFilter === filterName ? null : filterName,
+    );
   };
 
   const getButtonClassName = (nameFilter: Exclude<FilterName, null>) =>
@@ -47,7 +66,7 @@ export default function CentralBlock() {
           name="search"
         />
       </div>
-      <h2 className={styles.centerblockH2}>Треки</h2>
+      <h2 className={styles.centerblockH2}>{title}</h2>
       <div className={styles.filter}>
         <div className={styles.filterTitle}>Искать по:</div>
         <div className={styles.filterWrapper}>
@@ -105,7 +124,18 @@ export default function CentralBlock() {
           ) : null}
         </div>
       </div>
-      <TrackList tracks={data} />
+
+      {isLoading ? (
+        <p className={styles.stateMessage}>Загрузка треков…</p>
+      ) : error ? (
+        <p className={classNames(styles.stateMessage, styles.stateError)}>
+          {error}
+        </p>
+      ) : tracks.length === 0 ? (
+        <p className={styles.stateMessage}>Треки не найдены.</p>
+      ) : (
+        <TrackList tracks={tracks} />
+      )}
     </div>
   );
 }

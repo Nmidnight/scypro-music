@@ -30,11 +30,22 @@
 }
 
 .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 43px;
   height: 43px;
+  padding: 0;
+  border: none;
   background-color: #313131;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.icon svg {
+  width: 18px;
+  height: 18px;
+  fill: #696969;
 }
 
 .block {
