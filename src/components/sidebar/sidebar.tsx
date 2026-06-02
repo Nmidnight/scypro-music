@@ -36,13 +36,13 @@ export default function Sidebar() {
             aria-label="Выйти"
           >
             <svg>
-              <use href="/img/icon/sprite.svg#logout"></use>
+              <use href="/img/icon/sprite.svg#icon-user"></use>
             </svg>
           </button>
         ) : (
           <Link className={styles.icon} href="/signin" aria-label="Войти">
             <svg>
-              <use href="/img/icon/sprite.svg#logout"></use>
+              <use href="/img/icon/sprite.svg#icon-user"></use>
             </svg>
           </Link>
         )}
