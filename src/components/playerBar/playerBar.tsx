@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import DislikeButton from "@/components/dislikeButton/dislikeButton";
+import LikeButton from "@/components/likeButton/likeButton";
 import {
   nextTrack,
   playNextAfterEnd,
@@ -174,32 +176,31 @@ export default function PlayerBar() {
           dispatch(playNextAfterEnd());
         }}
       />
-      <div className={styles.content}>
-        <div className={styles.progressSection}>
-          <div className={styles.progressTimes}>
-            <span className={styles.timeText}>{formatTime(currentTime)}</span>
-            <span className={styles.timeText}>{formatTime(displayDuration)}</span>
-          </div>
-          <div
-            ref={progressRef}
-            className={styles.playerProgress}
-            role="slider"
-            tabIndex={0}
-            aria-valuemin={0}
-            aria-valuemax={Math.max(1, Math.round(displayDuration))}
-            aria-valuenow={Math.round(currentTime)}
-            aria-label="Прогресс воспроизведения"
-            onClick={handleProgressClick}
-            onKeyDown={handleProgressKeyDown}
-          >
-            <div
-              className={styles.playerProgressFill}
-              style={{ width: `${progressRatio * 100}%` }}
-            />
-          </div>
+      <div className={styles.progressSection}>
+        <div className={styles.progressTimes}>
+          <span className={styles.timeText}>{formatTime(currentTime)}</span>
+          <span className={styles.timeText}>{formatTime(displayDuration)}</span>
         </div>
-        <div className={styles.playerBlock}>
-          <div className={styles.player}>
+        <div
+          ref={progressRef}
+          className={styles.playerProgress}
+          role="slider"
+          tabIndex={0}
+          aria-valuemin={0}
+          aria-valuemax={Math.max(1, Math.round(displayDuration))}
+          aria-valuenow={Math.round(currentTime)}
+          aria-label="Прогресс воспроизведения"
+          onClick={handleProgressClick}
+          onKeyDown={handleProgressKeyDown}
+        >
+          <div
+            className={styles.playerProgressFill}
+            style={{ width: `${progressRatio * 100}%` }}
+          />
+        </div>
+      </div>
+      <div className={styles.playerBlock}>
+        <div className={styles.player}>
             <div className={styles.controls}>
               <button
                 type="button"
@@ -288,38 +289,38 @@ export default function PlayerBar() {
               </div>
 
               <div className={styles.trackActions}>
-                <div className={styles.iconButton}>
-                  <svg className={styles.likeSvg}>
-                    <use href="/img/icon/sprite.svg#icon-like"></use>
-                  </svg>
-                </div>
-                <div className={`${styles.iconButton} ${styles.dislikeSpaced}`}>
-                  <svg className={styles.dislikeSvg}>
-                    <use href="/img/icon/sprite.svg#icon-dislike"></use>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.volumeBlock}>
-            <div className={styles.volumeContent}>
-              <div className={styles.volumeImage}>
-                <svg className={styles.volumeSvg}>
-                  <use href="/img/icon/sprite.svg#icon-volume"></use>
-                </svg>
-              </div>
-              <div className={`${styles.volumeProgress} btn`}>
-                <input
-                  className={`${styles.volumeProgressLine} btn`}
-                  type="range"
-                  name="volume"
-                  min={0}
-                  max={1}
-                  step={0.01}
-                  value={volume}
-                  onChange={handleVolumeChange}
+                {currentTrack ? (
+                  <LikeButton
+                    track={currentTrack}
+                    variant="player"
+                    showCount={false}
+                  />
+                ) : null}
+                <DislikeButton
+                  className={classNames(styles.iconButton, styles.dislikeSpaced)}
+                  disabled={!currentTrack}
                 />
               </div>
+            </div>
+        </div>
+        <div className={styles.volumeBlock}>
+          <div className={styles.volumeContent}>
+            <div className={styles.volumeImage}>
+              <svg className={styles.volumeSvg}>
+                <use href="/img/icon/sprite.svg#icon-volume"></use>
+              </svg>
+            </div>
+            <div className={`${styles.volumeProgress} btn`}>
+              <input
+                className={`${styles.volumeProgressLine} btn`}
+                type="range"
+                name="volume"
+                min={0}
+                max={1}
+                step={0.01}
+                value={volume}
+                onChange={handleVolumeChange}
+              />
             </div>
           </div>
         </div>

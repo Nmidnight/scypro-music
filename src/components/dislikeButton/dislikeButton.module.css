@@ -1,0 +1,30 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) .icon {
+  stroke: #acacac;
+}
+
+.button:active:not(:disabled) .icon {
+  fill: #696969;
+  stroke: #ffffff;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.icon {
+  width: 14.34px;
+  height: 13px;
+  fill: transparent;
+  stroke: #696969;
+}

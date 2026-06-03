@@ -1,0 +1,91 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.button:hover:not(:disabled) .icon {
+  stroke: #b672ff;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.button.active .icon {
+  fill: #ad61ff;
+  stroke: #ad61ff;
+}
+
+.button.pulse .icon {
+  animation: likePop 0.35s ease;
+}
+
+.button.disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.list {
+  flex-direction: row;
+}
+
+.player {
+  flex-direction: row;
+}
+
+.icon {
+  fill: transparent;
+  stroke: #696969;
+  transition:
+    fill 0.2s ease,
+    stroke 0.2s ease,
+    transform 0.2s ease;
+}
+
+.iconList {
+  width: 14px;
+  height: 12px;
+}
+
+.iconPlayer {
+  width: 14px;
+  height: 12px;
+}
+
+.count {
+  font-size: 14px;
+  line-height: 24px;
+  color: #696969;
+  min-width: 1.5ch;
+}
+
+.button.active .count {
+  color: #ad61ff;
+}
+
+@keyframes likePop {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

@@ -133,14 +133,9 @@
 .trackTime {
   display: flex;
   align-items: center;
-}
-
-.trackTimeSvg {
-  width: 14px;
-  height: 12px;
-  margin-right: 17px;
-  fill: transparent;
-  stroke: #696969;
+  gap: 12px;
+  justify-content: flex-end;
+  min-width: 120px;
 }
 
 .trackTimeText {

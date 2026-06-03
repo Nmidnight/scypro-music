@@ -2,6 +2,7 @@
 
 import classNames from "classnames";
 
+import LikeButton from "@/components/likeButton/likeButton";
 import type { Track } from "@/types";
 import {
   selectCurrentTrack,
@@ -67,9 +68,7 @@ export default function TrackItem({ track }: TrackItemProps) {
           <span className={styles.trackAlbumLink}>{track.album}</span>
         </div>
         <div className={styles.trackTime}>
-          <svg className={styles.trackTimeSvg}>
-            <use href="/img/icon/sprite.svg#icon-like"></use>
-          </svg>
+          <LikeButton track={track} variant="list" />
           <span className={styles.trackTimeText}>
             {formatDuration(track.duration_in_seconds)}
           </span>

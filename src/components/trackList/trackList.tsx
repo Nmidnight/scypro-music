@@ -8,7 +8,7 @@ type TrackListProps = {
 
 export default function TrackList({ tracks }: TrackListProps) {
   return (
-    <div className={styles.content}>
+    <div className={styles.root}>
       <div className={styles.contentTitle}>
         <div className={`${styles.playlistTitleCol} ${styles.col01}`}>
           Трек
@@ -25,10 +25,12 @@ export default function TrackList({ tracks }: TrackListProps) {
           </svg>
         </div>
       </div>
-      <div className={styles.playlist}>
-        {tracks.map((track) => (
-          <TrackItem key={track._id} track={track} />
-        ))}
+      <div className={styles.scrollArea}>
+        <div className={styles.playlist}>
+          {tracks.map((track) => (
+            <TrackItem key={track._id} track={track} />
+          ))}
+        </div>
       </div>
     </div>
   );
