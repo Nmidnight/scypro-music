@@ -9,6 +9,7 @@ import styles from "./mainNav.module.css";
 export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useAppSelector((state) => state.auth.user);
+  const isHydrated = useAppSelector((state) => state.auth.isHydrated);
   const handleLogout = useLogout();
 
   const handleClick = () => {
@@ -46,7 +47,11 @@ export default function MainNav() {
             </Link>
           </li>
           <li className={styles.menu__item}>
-            {user ? (
+            {!isHydrated || !user ? (
+              <Link href="/signin" className={styles.menu__link}>
+                Войти
+              </Link>
+            ) : (
               <button
                 type="button"
                 className={styles.menu__link}
@@ -54,10 +59,6 @@ export default function MainNav() {
               >
                 Выйти
               </button>
-            ) : (
-              <Link href="/signin" className={styles.menu__link}>
-                Войти
-              </Link>
             )}
           </li>
         </ul>

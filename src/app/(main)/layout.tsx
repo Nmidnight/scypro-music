@@ -17,10 +17,10 @@ export default function MainLayout({
           {children}
           <Sidebar />
         </main>
-        <PlayerBar />
-        <LikeToast />
         <footer className="footer"></footer>
+        <PlayerBar />
       </div>
+      <LikeToast />
     </div>
   );
 }

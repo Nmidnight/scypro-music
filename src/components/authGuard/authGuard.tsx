@@ -13,14 +13,15 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
+  const isHydrated = useAppSelector((state) => state.auth.isHydrated);
 
   useEffect(() => {
-    if (!user) {
+    if (isHydrated && !user) {
       router.replace("/signin");
     }
-  }, [router, user]);
+  }, [router, user, isHydrated]);
 
-  if (!user) {
+  if (!isHydrated || !user) {
     return <div className={styles.loading} aria-hidden />;
   }
 

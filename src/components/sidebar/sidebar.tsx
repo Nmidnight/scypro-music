@@ -14,13 +14,15 @@ const PLAYLISTS = [
 
 export default function Sidebar() {
   const user = useAppSelector((state) => state.auth.user);
+  const isHydrated = useAppSelector((state) => state.auth.isHydrated);
+  const displayUser = isHydrated ? user : null;
   const handleLogout = useLogout();
 
   return (
     <div className={styles.root}>
       <div className={styles.personal}>
-        <p className={styles.personalName}>{user?.username ?? "Гость"}</p>
-        {user ? (
+        <p className={styles.personalName}>{displayUser?.username ?? "Гость"}</p>
+        {displayUser ? (
           <button
             type="button"
             className={styles.icon}
@@ -41,7 +43,7 @@ export default function Sidebar() {
       </div>
       <div className={styles.block}>
         <div className={styles.list}>
-          {user ? (
+          {displayUser ? (
             <div className={styles.item}>
               <Link className={styles.link} href="/favorites">
                 <span className={styles.favoritesLabel}>Мои треки</span>

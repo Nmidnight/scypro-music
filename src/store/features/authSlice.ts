@@ -16,6 +16,7 @@ export type AuthState = {
   tokens: Tokens | null;
   isLoading: boolean;
   error: string | null;
+  isHydrated: boolean;
 };
 
 function readFromStorage<T>(key: string): T | null {
@@ -29,10 +30,11 @@ function readFromStorage<T>(key: string): T | null {
 }
 
 const initialState: AuthState = {
-  user: readFromStorage<User>(USER_KEY),
-  tokens: readFromStorage<Tokens>(TOKENS_KEY),
+  user: null,
+  tokens: null,
   isLoading: false,
   error: null,
+  isHydrated: false,
 };
 
 export const loginUser = createAsyncThunk<
@@ -69,6 +71,11 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    hydrateAuthFromStorage: (state) => {
+      state.user = readFromStorage<User>(USER_KEY);
+      state.tokens = readFromStorage<Tokens>(TOKENS_KEY);
+      state.isHydrated = true;
+    },
     setAccessToken: (state, action: { payload: string }) => {
       if (!state.tokens) return;
       state.tokens = { ...state.tokens, access: action.payload };
@@ -131,5 +138,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuthError, setAccessToken } = authSlice.actions;
+export const {
+  logout,
+  clearAuthError,
+  setAccessToken,
+  hydrateAuthFromStorage,
+} = authSlice.actions;
 export const authReducer = authSlice.reducer;
