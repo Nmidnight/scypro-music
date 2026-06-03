@@ -1,16 +1,22 @@
 .centerblock {
   width: auto;
-  -webkit-box-flex: 3;
-  -ms-flex-positive: 3;
-  flex-grow: 3;
-  flex-shrink: 1;
+  flex: 3 1 0;
   min-width: 0;
+  min-height: 0;
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   padding: 20px 40px 20px 111px;
   box-sizing: border-box;
+}
+
+.listSection {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .search {

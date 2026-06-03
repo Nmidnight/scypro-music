@@ -9,6 +9,8 @@ import {
   useState,
 } from "react";
 
+import DislikeButton from "@/components/dislikeButton/dislikeButton";
+import LikeButton from "@/components/likeButton/likeButton";
 import {
   nextTrack,
   playNextAfterEnd,
@@ -288,16 +290,17 @@ export default function PlayerBar() {
               </div>
 
               <div className={styles.trackActions}>
-                <div className={styles.iconButton}>
-                  <svg className={styles.likeSvg}>
-                    <use href="/img/icon/sprite.svg#icon-like"></use>
-                  </svg>
-                </div>
-                <div className={`${styles.iconButton} ${styles.dislikeSpaced}`}>
-                  <svg className={styles.dislikeSvg}>
-                    <use href="/img/icon/sprite.svg#icon-dislike"></use>
-                  </svg>
-                </div>
+                {currentTrack ? (
+                  <LikeButton
+                    track={currentTrack}
+                    variant="player"
+                    showCount={false}
+                  />
+                ) : null}
+                <DislikeButton
+                  className={classNames(styles.iconButton, styles.dislikeSpaced)}
+                  disabled={!currentTrack}
+                />
               </div>
             </div>
           </div>

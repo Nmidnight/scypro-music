@@ -1,25 +1,18 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { logout } from "@/store/features/authSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useLogout } from "@/hooks/useLogout";
+import { useAppSelector } from "@/store/store";
 import styles from "./mainNav.module.css";
 export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
+  const handleLogout = useLogout();
 
   const handleClick = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    router.push("/signin");
   };
 
   return (
@@ -43,13 +36,13 @@ export default function MainNav() {
       <div className={`${styles.nav__menu} ${isMenuOpen ? styles.active : ""}`}>
         <ul className={styles.menu__list}>
           <li className={styles.menu__item}>
-            <Link href="#" className={styles.menu__link}>
+            <Link href="/" className={styles.menu__link}>
               Главное
             </Link>
           </li>
           <li className={styles.menu__item}>
-            <Link href="#" className={styles.menu__link}>
-              Мой плейлист
+            <Link href="/favorites" className={styles.menu__link}>
+              Мои треки
             </Link>
           </li>
           <li className={styles.menu__item}>

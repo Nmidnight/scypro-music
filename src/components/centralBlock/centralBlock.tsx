@@ -134,7 +134,9 @@ export default function CentralBlock({
       ) : tracks.length === 0 ? (
         <p className={styles.stateMessage}>Треки не найдены.</p>
       ) : (
-        <TrackList tracks={tracks} />
+        <div className={styles.listSection}>
+          <TrackList tracks={tracks} />
+        </div>
       )}
     </div>
   );

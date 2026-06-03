@@ -8,13 +8,14 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.auth.user?._id);
   const { allTracks, isLoading, error } = useAppSelector(
     (state) => state.tracks,
   );
 
   useEffect(() => {
     dispatch(getTracks());
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   useEffect(() => {
     if (allTracks.length > 0) {

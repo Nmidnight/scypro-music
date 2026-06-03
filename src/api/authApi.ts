@@ -1,3 +1,4 @@
+import { extractError } from "@/api/extractError";
 import { API_URL } from "./baseUrl";
 import type {
   AuthCredentials,
@@ -5,26 +6,6 @@ import type {
   Tokens,
   User,
 } from "@/types";
-
-async function extractError(response: Response): Promise<string> {
-  try {
-    const body = await response.json();
-
-    if (typeof body?.message === "string") {
-      return body.message;
-    }
-
-    const fieldErrors = Object.values(body ?? {})
-      .flat()
-      .filter((value): value is string => typeof value === "string");
-
-    if (fieldErrors.length > 0) {
-      return fieldErrors.join(" ");
-    }
-  } catch {}
-
-  return "Произошла ошибка. Попробуйте позже.";
-}
 
 export async function signup(credentials: SignupCredentials): Promise<User> {
   const response = await fetch(`${API_URL}/user/signup/`, {

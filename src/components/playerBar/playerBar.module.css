@@ -373,6 +373,11 @@
   margin-left: 28.5px;
 }
 
+.actionDisabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .dislikeSvg {
   width: 14.34px;
   height: 13px;
