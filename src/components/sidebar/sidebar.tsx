@@ -50,7 +50,7 @@ export default function Sidebar() {
               </Link>
             </div>
           ) : null}
-          {PLAYLISTS.map((item) => (
+          {PLAYLISTS.map((item, index) => (
             <div key={item.id} className={styles.item}>
               <Link className={styles.link} href={`/category/${item.id}`}>
                 <Image
@@ -59,6 +59,7 @@ export default function Sidebar() {
                   alt="day's playlist"
                   width={250}
                   height={150}
+                  priority={index === 0}
                   style={{ width: "100%", height: "auto" }}
                 />
               </Link>

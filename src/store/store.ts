@@ -10,6 +10,11 @@ export const makeStore = () => {
       tracks: trackSliceReducer,
       auth: authReducer,
     }),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: { warnAfter: 128 },
+        immutableCheck: { warnAfter: 128 },
+      }),
   });
 };
 
