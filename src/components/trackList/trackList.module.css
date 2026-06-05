@@ -7,10 +7,13 @@
 }
 
 .contentTitle {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: minmax(0, 4.47fr) minmax(0, 3.21fr) minmax(0, 2.45fr) minmax(
+      100px,
+      auto
+    );
+  column-gap: 16px;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 24px;
   flex-shrink: 0;
 }
@@ -52,19 +55,6 @@
   stroke: #696969;
 }
 
-.col01 {
-  width: 447px;
-}
-
-.col02 {
-  width: 321px;
-}
-
-.col03 {
-  width: 245px;
-}
-
 .col04 {
-  width: 60px;
-  text-align: end;
+  justify-self: end;
 }
