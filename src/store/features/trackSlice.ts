@@ -8,8 +8,10 @@ import {
   getFavoriteTracks,
   removeTrackFromFavorites,
 } from "@/api/tracksApi";
+import { LOGIN_REQUIRED_FAVORITES, LOGIN_REQUIRED_LIKE } from "@/constants/messages";
 import type { AppDispatch, RootState } from "@/store/store";
 import type { Track } from "@/types";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import { applyLikeToTrack } from "@/utils/trackLikes";
 
 export type TrackSliceState = {
@@ -23,10 +25,9 @@ export type TrackSliceState = {
   isRepeat: boolean;
   isLoading: boolean;
   isFavoritesLoading: boolean;
-  isLikePending: boolean;
+  pendingLikeTrackIds: number[];
   error: string | null;
   favoritesError: string | null;
-  likeMessage: string | null;
 };
 
 type ToggleLikeArg = {
@@ -112,10 +113,9 @@ const initialState: TrackSliceState = {
   isRepeat: false,
   isLoading: false,
   isFavoritesLoading: false,
-  isLikePending: false,
+  pendingLikeTrackIds: [],
   error: null,
   favoritesError: null,
-  likeMessage: null,
 };
 
 type TracksRoot = { tracks: TrackSliceState };
@@ -143,7 +143,7 @@ export const getTracks = createAsyncThunk<Track[], void, { rejectValue: string }
       return await getAllTracks();
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : "Ошибка загрузки треков",
+        getErrorMessage(error, "Ошибка загрузки треков"),
       );
     }
   },
@@ -156,7 +156,7 @@ export const fetchFavoriteTracks = createAsyncThunk<
 >("tracks/fetchFavoriteTracks", async (_, { getState, dispatch, rejectWithValue }) => {
   const user = getState().auth.user;
   if (!user) {
-    return rejectWithValue("Войдите в аккаунт, чтобы открыть избранное.");
+    return rejectWithValue(LOGIN_REQUIRED_FAVORITES);
   }
 
   try {
@@ -164,7 +164,7 @@ export const fetchFavoriteTracks = createAsyncThunk<
     return await getFavoriteTracks(ctx);
   } catch (error) {
     return rejectWithValue(
-      error instanceof Error ? error.message : "Не удалось загрузить избранное.",
+      getErrorMessage(error, "Не удалось загрузить избранное."),
     );
   }
 });
@@ -178,7 +178,7 @@ export const toggleTrackLike = createAsyncThunk<
   async ({ trackId, liked }, { getState, dispatch, rejectWithValue }) => {
     const user = getState().auth.user;
     if (!user) {
-      return rejectWithValue("Войдите в аккаунт, чтобы ставить лайки.");
+      return rejectWithValue(LOGIN_REQUIRED_LIKE);
     }
 
     try {
@@ -191,7 +191,7 @@ export const toggleTrackLike = createAsyncThunk<
       return { trackId, liked, userId: user._id };
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : "Не удалось обновить лайк.",
+        getErrorMessage(error, "Не удалось обновить лайк."),
       );
     }
   },
@@ -278,13 +278,6 @@ const trackSlice = createSlice({
     toggleRepeat: (state) => {
       state.isRepeat = !state.isRepeat;
     },
-    clearLikeMessage: (state) => {
-      state.likeMessage = null;
-    },
-    setLikeMessage: (state, action: PayloadAction<string>) => {
-      if (state.likeMessage === action.payload) return;
-      state.likeMessage = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -314,10 +307,12 @@ const trackSlice = createSlice({
           action.payload ?? "Не удалось загрузить избранное.";
       })
       .addCase(toggleTrackLike.pending, (state, action) => {
-        state.isLikePending = true;
-        state.likeMessage = null;
-
         const { trackId, liked, userId } = action.meta.arg;
+
+        if (!state.pendingLikeTrackIds.includes(trackId)) {
+          state.pendingLikeTrackIds.push(trackId);
+        }
+
         const track = findTrackById(state, trackId);
         if (!track) return;
 
@@ -325,15 +320,18 @@ const trackSlice = createSlice({
         patchTrackEverywhere(state, trackId, patched);
         syncFavoriteList(state, trackId, patched, liked);
       })
-      .addCase(toggleTrackLike.fulfilled, (state) => {
-        state.isLikePending = false;
+      .addCase(toggleTrackLike.fulfilled, (state, action) => {
+        const { trackId } = action.meta.arg;
+        state.pendingLikeTrackIds = state.pendingLikeTrackIds.filter(
+          (id) => id !== trackId,
+        );
       })
       .addCase(toggleTrackLike.rejected, (state, action) => {
-        state.isLikePending = false;
-        state.likeMessage =
-          action.payload ?? "Не удалось обновить лайк. Попробуйте позже.";
-
         const { trackId, liked, userId } = action.meta.arg;
+        state.pendingLikeTrackIds = state.pendingLikeTrackIds.filter(
+          (id) => id !== trackId,
+        );
+
         const track = findTrackById(state, trackId);
         if (!track) return;
 
@@ -344,7 +342,7 @@ const trackSlice = createSlice({
       .addCase(logout, (state) => {
         state.favoriteTracks = [];
         state.favoritesError = null;
-        state.likeMessage = null;
+        state.pendingLikeTrackIds = [];
       });
   },
 });
@@ -359,8 +357,6 @@ export const {
   playNextAfterEnd,
   toggleShuffle,
   toggleRepeat,
-  clearLikeMessage,
-  setLikeMessage,
 } = trackSlice.actions;
 
 export const trackSliceReducer = trackSlice.reducer;

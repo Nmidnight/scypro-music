@@ -8,12 +8,27 @@
   padding: 12px 20px;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.9);
-  color: #ff6b6b;
   font-size: 14px;
   line-height: 1.4;
   text-align: center;
   pointer-events: none;
   animation: toastIn 0.25s ease;
+}
+
+.error {
+  color: #ff6b6b;
+}
+
+.success {
+  color: #7ee787;
+}
+
+.warning {
+  color: #ffd166;
+}
+
+.info {
+  color: #ffffff;
 }
 
 @keyframes toastIn {

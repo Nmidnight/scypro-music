@@ -9,13 +9,8 @@ import {
   setCurrentTrack,
 } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { formatDuration } from "@/utils/formatDuration";
 import styles from "./trackItem.module.css";
-
-function formatDuration(totalSeconds: number) {
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
 
 type TrackItemProps = {
   track: Track;

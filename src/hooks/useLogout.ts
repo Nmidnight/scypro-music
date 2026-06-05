@@ -12,14 +12,10 @@ export function useLogout() {
   const pathname = usePathname();
 
   return useCallback(() => {
-    const wasOnFavorites = pathname === "/favorites";
     dispatch(logout());
 
-    if (wasOnFavorites) {
+    if (pathname === "/favorites") {
       router.push("/");
-      return;
     }
-
-    router.push("/signin");
   }, [dispatch, pathname, router]);
 }

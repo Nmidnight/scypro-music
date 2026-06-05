@@ -3,10 +3,9 @@
 import classNames from "classnames";
 import { useCallback, useMemo, useState } from "react";
 
-import {
-  setLikeMessage,
-  toggleTrackLike,
-} from "@/store/features/trackSlice";
+import { LOGIN_REQUIRED_LIKE } from "@/constants/messages";
+import { showToast } from "@/store/features/toastSlice";
+import { toggleTrackLike } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import type { Track } from "@/types";
 import { getLikeCount, isTrackLikedByUser } from "@/utils/trackLikes";
@@ -29,7 +28,9 @@ export default function LikeButton({
 }: LikeButtonProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const isLikePending = useAppSelector((state) => state.tracks.isLikePending);
+  const isLikePending = useAppSelector((state) =>
+    state.tracks.pendingLikeTrackIds.includes(track._id),
+  );
 
   const isLiked = useMemo(
     () => isTrackLikedByUser(track, user?._id),
@@ -45,7 +46,7 @@ export default function LikeButton({
       event.preventDefault();
 
       if (!user) {
-        dispatch(setLikeMessage("Войдите в аккаунт, чтобы ставить лайки."));
+        dispatch(showToast({ message: LOGIN_REQUIRED_LIKE, type: "warning" }));
         return;
       }
 
@@ -59,9 +60,14 @@ export default function LikeButton({
           liked: nextLiked,
           userId: user._id,
         }),
-      ).finally(() => {
-        window.setTimeout(() => setIsAnimating(false), 350);
-      });
+      )
+        .unwrap()
+        .catch((message) => {
+          dispatch(showToast({ message: String(message), type: "error" }));
+        })
+        .finally(() => {
+          window.setTimeout(() => setIsAnimating(false), 350);
+        });
     },
     [dispatch, isLikePending, isLiked, track._id, user],
   );

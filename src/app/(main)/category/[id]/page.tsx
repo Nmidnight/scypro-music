@@ -5,9 +5,11 @@ import { useParams } from "next/navigation";
 
 import { getSelectionById } from "@/api/selectionsApi";
 import CentralBlock from "@/components/centralBlock/centralBlock";
-import { getTracks, setPlaylist } from "@/store/features/trackSlice";
+import { useSyncPlaylist } from "@/hooks/useSyncPlaylist";
+import { getTracks } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import type { Selection } from "@/types";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
@@ -39,12 +41,10 @@ export default function CategoryPage() {
       try {
         const data = await getSelectionById(id);
         if (active) setSelection(data);
-      } catch (err: unknown) {
+      } catch (error: unknown) {
         if (active) {
           setSelectionError(
-            err instanceof Error
-              ? err.message
-              : "Не удалось загрузить подборку.",
+            getErrorMessage(error, "Не удалось загрузить подборку."),
           );
         }
       } finally {
@@ -66,11 +66,7 @@ export default function CategoryPage() {
       .filter((track): track is NonNullable<typeof track> => Boolean(track));
   }, [selection, allTracks]);
 
-  useEffect(() => {
-    if (selectionTracks.length > 0) {
-      dispatch(setPlaylist(selectionTracks));
-    }
-  }, [selectionTracks, dispatch]);
+  useSyncPlaylist(selectionTracks);
 
   return (
     <CentralBlock

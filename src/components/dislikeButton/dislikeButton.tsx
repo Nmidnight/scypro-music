@@ -3,7 +3,8 @@
 import classNames from "classnames";
 import { useCallback } from "react";
 
-import { setLikeMessage } from "@/store/features/trackSlice";
+import { LOGIN_REQUIRED_DISLIKE } from "@/constants/messages";
+import { showToast } from "@/store/features/toastSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import styles from "./dislikeButton.module.css";
 
@@ -21,7 +22,7 @@ export default function DislikeButton({
 
   const handleClick = useCallback(() => {
     if (!user) {
-      dispatch(setLikeMessage("Войдите в аккаунт, чтобы ставить дизлайки."));
+      dispatch(showToast({ message: LOGIN_REQUIRED_DISLIKE, type: "warning" }));
     }
   }, [dispatch, user]);
 

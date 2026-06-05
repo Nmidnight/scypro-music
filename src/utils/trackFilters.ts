@@ -3,8 +3,8 @@ import type { Track } from "@/types";
 
 export type TrackFilterCriteria = {
   searchQuery: string;
-  selectedAuthor: string | null;
-  selectedGenre: string | null;
+  selectedAuthors: string[];
+  selectedGenres: string[];
   sortOrder: SortOrder;
 };
 
@@ -26,14 +26,14 @@ export function matchesSearch(track: Track, searchQuery: string): boolean {
   return track.name.toLowerCase().startsWith(query);
 }
 
-export function matchesAuthor(track: Track, author: string | null): boolean {
-  if (!author) return true;
-  return track.author === author;
+export function matchesAuthors(track: Track, authors: string[]): boolean {
+  if (authors.length === 0) return true;
+  return authors.includes(track.author);
 }
 
-export function matchesGenre(track: Track, genre: string | null): boolean {
-  if (!genre) return true;
-  return track.genre.includes(genre);
+export function matchesGenres(track: Track, genres: string[]): boolean {
+  if (genres.length === 0) return true;
+  return genres.some((genre) => track.genre.includes(genre));
 }
 
 export function compareByReleaseDate(a: Track, b: Track): number {
@@ -54,8 +54,8 @@ export function sortTracksByDate(tracks: Track[], sortOrder: SortOrder): Track[]
 export function hasActiveFilters(criteria: TrackFilterCriteria): boolean {
   return (
     criteria.searchQuery.trim().length > 0 ||
-    criteria.selectedAuthor !== null ||
-    criteria.selectedGenre !== null ||
+    criteria.selectedAuthors.length > 0 ||
+    criteria.selectedGenres.length > 0 ||
     criteria.sortOrder !== "default"
   );
 }
@@ -67,8 +67,8 @@ export function filterTracks(
   const filtered = tracks.filter(
     (track) =>
       matchesSearch(track, criteria.searchQuery) &&
-      matchesAuthor(track, criteria.selectedAuthor) &&
-      matchesGenre(track, criteria.selectedGenre),
+      matchesAuthors(track, criteria.selectedAuthors) &&
+      matchesGenres(track, criteria.selectedGenres),
   );
 
   return sortTracksByDate(filtered, criteria.sortOrder);

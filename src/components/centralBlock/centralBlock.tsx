@@ -7,11 +7,13 @@ import classNames from "classnames";
 import FilterBar from "@/components/filterBar/filterBar";
 import Search from "@/components/search/search";
 import TrackList from "@/components/trackList/trackList";
+import TrackListSkeleton from "@/components/trackListSkeleton/trackListSkeleton";
 import {
   DEFAULT_TRACK_FILTER_STATE,
   type ActiveFilterPanel,
   type SortOrder,
   type TrackFilterState,
+  toggleFilterValue,
 } from "@/types/filters";
 import type { Track } from "@/types";
 import {
@@ -45,8 +47,8 @@ function CentralBlockContent({
     () =>
       filterTracks(tracks, {
         searchQuery: filters.searchQuery,
-        selectedAuthor: filters.selectedAuthor,
-        selectedGenre: filters.selectedGenre,
+        selectedAuthors: filters.selectedAuthors,
+        selectedGenres: filters.selectedGenres,
         sortOrder: filters.sortOrder,
       }),
     [tracks, filters],
@@ -69,16 +71,14 @@ function CentralBlockContent({
   const handleSelectAuthor = useCallback((author: string) => {
     setFilters((prev) => ({
       ...prev,
-      selectedAuthor: prev.selectedAuthor === author ? null : author,
-      activePanel: null,
+      selectedAuthors: toggleFilterValue(prev.selectedAuthors, author),
     }));
   }, []);
 
   const handleSelectGenre = useCallback((genre: string) => {
     setFilters((prev) => ({
       ...prev,
-      selectedGenre: prev.selectedGenre === genre ? null : genre,
-      activePanel: null,
+      selectedGenres: toggleFilterValue(prev.selectedGenres, genre),
     }));
   }, []);
 
@@ -99,8 +99,8 @@ function CentralBlockContent({
       <h2 className={styles.centerblockH2}>{title}</h2>
       <FilterBar
         activePanel={filters.activePanel}
-        selectedAuthor={filters.selectedAuthor}
-        selectedGenre={filters.selectedGenre}
+        selectedAuthors={filters.selectedAuthors}
+        selectedGenres={filters.selectedGenres}
         sortOrder={filters.sortOrder}
         authors={uniqueAuthors}
         genres={uniqueGenres}
@@ -111,7 +111,9 @@ function CentralBlockContent({
       />
 
       {isLoading ? (
-        <p className={styles.stateMessage}>Загрузка треков…</p>
+        <div className={styles.listSection}>
+          <TrackListSkeleton />
+        </div>
       ) : error ? (
         <p className={classNames(styles.stateMessage, styles.stateError)}>
           {error}

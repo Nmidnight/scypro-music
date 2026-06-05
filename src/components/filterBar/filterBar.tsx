@@ -7,8 +7,8 @@ import styles from "./filterBar.module.css";
 
 type FilterBarProps = {
   activePanel: ActiveFilterPanel;
-  selectedAuthor: string | null;
-  selectedGenre: string | null;
+  selectedAuthors: string[];
+  selectedGenres: string[];
   sortOrder: SortOrder;
   authors: string[];
   genres: string[];
@@ -18,10 +18,76 @@ type FilterBarProps = {
   onSelectSortOrder: (order: Exclude<SortOrder, "default">) => void;
 };
 
+type FilterButtonProps = {
+  panel: Exclude<ActiveFilterPanel, null>;
+  label: string;
+  count: number;
+  activePanel: ActiveFilterPanel;
+  onToggle: () => void;
+};
+
+function FilterButton({
+  panel,
+  label,
+  count,
+  activePanel,
+  onToggle,
+}: FilterButtonProps) {
+  return (
+    <div className={styles.buttonWrap}>
+      <button
+        type="button"
+        className={classNames(styles.button, "btn-text", {
+          [styles.active]: activePanel === panel,
+          [styles.buttonWithSelection]: count > 0,
+        })}
+        onClick={onToggle}
+      >
+        {label}
+      </button>
+      {count > 0 ? (
+        <span className={styles.badge} aria-hidden="true">
+          {count}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+type FilterOptionsDropdownProps = {
+  items: Array<{
+    key: string;
+    label: string;
+    isActive: boolean;
+    onSelect: () => void;
+  }>;
+};
+
+function FilterOptionsDropdown({ items }: FilterOptionsDropdownProps) {
+  return (
+    <div className={styles.filterDropdown}>
+      <div className={styles.filterList}>
+        {items.map((item) => (
+          <button
+            key={item.key}
+            type="button"
+            className={classNames(styles.filterItem, {
+              [styles.filterItemActive]: item.isActive,
+            })}
+            onClick={item.onSelect}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function FilterBar({
   activePanel,
-  selectedAuthor,
-  selectedGenre,
+  selectedAuthors,
+  selectedGenres,
   sortOrder,
   authors,
   genres,
@@ -30,99 +96,74 @@ export default function FilterBar({
   onSelectGenre,
   onSelectSortOrder,
 }: FilterBarProps) {
-  const getButtonClassName = (panel: Exclude<ActiveFilterPanel, null>) =>
-    classNames(styles.button, "btn-text", {
-      [styles.active]: activePanel === panel,
-    });
+  const sortCount = sortOrder === "default" ? 0 : 1;
 
   return (
     <div className={styles.filter}>
       <div className={styles.filterTitle}>Искать по:</div>
       <div className={styles.filterWrapper}>
-        <button
-          type="button"
-          className={getButtonClassName("author")}
-          onClick={() => onTogglePanel("author")}
-        >
-          исполнителю
-        </button>
+        <FilterButton
+          panel="author"
+          label="исполнителю"
+          count={selectedAuthors.length}
+          activePanel={activePanel}
+          onToggle={() => onTogglePanel("author")}
+        />
         {activePanel === "author" ? (
-          <div className={styles.filterDropdown}>
-            <div className={styles.filterList}>
-              {authors.map((author) => (
-                <button
-                  key={author}
-                  type="button"
-                  className={classNames(styles.filterItem, {
-                    [styles.filterItemActive]: selectedAuthor === author,
-                  })}
-                  onClick={() => onSelectAuthor(author)}
-                >
-                  {author}
-                </button>
-              ))}
-            </div>
-          </div>
+          <FilterOptionsDropdown
+            items={authors.map((author) => ({
+              key: author,
+              label: author,
+              isActive: selectedAuthors.includes(author),
+              onSelect: () => onSelectAuthor(author),
+            }))}
+          />
         ) : null}
       </div>
       <div className={styles.filterWrapper}>
-        <button
-          type="button"
-          className={getButtonClassName("release_date")}
-          onClick={() => onTogglePanel("release_date")}
-        >
-          году выпуска
-        </button>
+        <FilterButton
+          panel="release_date"
+          label="году выпуска"
+          count={sortCount}
+          activePanel={activePanel}
+          onToggle={() => onTogglePanel("release_date")}
+        />
         {activePanel === "release_date" ? (
-          <div className={styles.filterDropdown}>
-            <div className={styles.filterList}>
-              <button
-                type="button"
-                className={classNames(styles.filterItem, {
-                  [styles.filterItemActive]: sortOrder === "older",
-                })}
-                onClick={() => onSelectSortOrder("older")}
-              >
-                Сначала старые
-              </button>
-              <button
-                type="button"
-                className={classNames(styles.filterItem, {
-                  [styles.filterItemActive]: sortOrder === "newer",
-                })}
-                onClick={() => onSelectSortOrder("newer")}
-              >
-                Сначала новые
-              </button>
-            </div>
-          </div>
+          <FilterOptionsDropdown
+            items={[
+              {
+                key: "older",
+                label: "Сначала старые",
+                isActive: sortOrder === "older",
+                onSelect: () => onSelectSortOrder("older"),
+              },
+              {
+                key: "newer",
+                label: "Сначала новые",
+                isActive: sortOrder === "newer",
+                onSelect: () => onSelectSortOrder("newer"),
+              },
+            ]}
+          />
         ) : null}
       </div>
       <div className={styles.filterWrapper}>
-        <button
-          type="button"
-          className={getButtonClassName("genre")}
-          onClick={() => onTogglePanel("genre")}
-        >
-          жанру
-        </button>
+        <FilterButton
+          panel="genre"
+          label="жанру"
+          count={selectedGenres.length}
+          activePanel={activePanel}
+          onToggle={() => onTogglePanel("genre")}
+        />
         {activePanel === "genre" ? (
-          <div className={styles.filterDropdown}>
-            <div className={styles.filterList}>
-              {genres.map((genre) => (
-                <button
-                  key={genre}
-                  type="button"
-                  className={classNames(styles.filterItem, {
-                    [styles.filterItemActive]: selectedGenre === genre,
-                  })}
-                  onClick={() => onSelectGenre(genre)}
-                >
-                  {genre}
-                </button>
-              ))}
-            </div>
-          </div>
+          <FilterOptionsDropdown
+            items={genres.map((genre) => ({
+              key: genre,
+              label: genre,
+              isActive: selectedGenres.includes(genre),
+              onSelect: () => onSelectGenre(genre),
+            }))}
+          />
         ) : null}
       </div>
     </div>
