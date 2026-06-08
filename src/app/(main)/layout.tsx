@@ -16,8 +16,8 @@ export default function MainLayout({
           {children}
           <Sidebar />
         </main>
-        <PlayerBar />
       </div>
+      <PlayerBar />
     </div>
   );
 }
