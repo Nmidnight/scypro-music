@@ -43,13 +43,6 @@ export default function Sidebar() {
       </div>
       <div className={styles.block}>
         <div className={styles.list}>
-          {displayUser ? (
-            <div className={styles.item}>
-              <Link className={styles.link} href="/favorites">
-                <span className={styles.favoritesLabel}>Мои треки</span>
-              </Link>
-            </div>
-          ) : null}
           {PLAYLISTS.map((item, index) => (
             <div key={item.id} className={styles.item}>
               <Link className={styles.link} href={`/category/${item.id}`}>

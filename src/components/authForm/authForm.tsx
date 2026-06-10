@@ -54,19 +54,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
         return;
       }
 
-      try {
-        await dispatch(
-          registerUser({ email, password, username }),
-        ).unwrap();
+      const result = await dispatch(
+        registerUser({ email, password, username }),
+      );
+      if (registerUser.fulfilled.match(result)) {
         router.push("/signin");
-      } catch {}
+      }
       return;
     }
 
-    try {
-      await dispatch(loginUser({ email, password })).unwrap();
+    const result = await dispatch(loginUser({ email, password }));
+    if (loginUser.fulfilled.match(result)) {
       router.push("/");
-    } catch {}
+    }
   };
 
   const errorMessage = localError ?? serverError;

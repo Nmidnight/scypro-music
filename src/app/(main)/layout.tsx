@@ -1,4 +1,3 @@
-import LikeToast from "@/components/likeToast/likeToast";
 import MainNav from "@/components/mainNav/mainNav";
 import PlayerBar from "@/components/playerBar/playerBar";
 import Sidebar from "@/components/sidebar/sidebar";
@@ -17,10 +16,8 @@ export default function MainLayout({
           {children}
           <Sidebar />
         </main>
-        <footer className="footer"></footer>
-        <PlayerBar />
       </div>
-      <LikeToast />
+      <PlayerBar />
     </div>
   );
 }

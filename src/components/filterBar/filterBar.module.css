@@ -13,7 +13,13 @@
   margin-right: 15px;
 }
 
+.buttonWrap {
+  position: relative;
+  display: inline-block;
+}
+
 .button {
+  font-family: inherit;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -26,9 +32,29 @@
   cursor: pointer;
 }
 
-.active {
+.active,
+.buttonWithSelection {
   border-color: #ad61ff;
   color: #ad61ff;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background-color: #ad61ff;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 500;
+  pointer-events: none;
 }
 
 .filterWrapper {
@@ -62,6 +88,7 @@
 }
 
 .filterItem {
+  font-family: inherit;
   border: none;
   background: transparent;
   color: #ffffff;

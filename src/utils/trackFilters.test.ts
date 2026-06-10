@@ -7,8 +7,8 @@ import {
   getUniqueAuthors,
   getUniqueGenres,
   hasActiveFilters,
-  matchesAuthor,
-  matchesGenre,
+  matchesAuthors,
+  matchesGenres,
   matchesSearch,
   sortTracksByDate,
 } from "./trackFilters";
@@ -81,19 +81,29 @@ describe("matchesSearch", () => {
   });
 });
 
-describe("matchesAuthor", () => {
-  it("filters by selected author", () => {
-    expect(matchesAuthor(tracks[0], "Alice")).toBe(true);
-    expect(matchesAuthor(tracks[1], "Alice")).toBe(false);
-    expect(matchesAuthor(tracks[0], null)).toBe(true);
+describe("matchesAuthors", () => {
+  it("filters by selected authors", () => {
+    expect(matchesAuthors(tracks[0], ["Alice"])).toBe(true);
+    expect(matchesAuthors(tracks[1], ["Alice"])).toBe(false);
+    expect(matchesAuthors(tracks[0], [])).toBe(true);
+  });
+
+  it("matches any of selected authors", () => {
+    expect(matchesAuthors(tracks[1], ["Alice", "Bob"])).toBe(true);
+    expect(matchesAuthors(tracks[0], ["Alice", "Bob"])).toBe(true);
   });
 });
 
-describe("matchesGenre", () => {
-  it("filters by selected genre", () => {
-    expect(matchesGenre(tracks[2], "Rock")).toBe(true);
-    expect(matchesGenre(tracks[0], "Rock")).toBe(false);
-    expect(matchesGenre(tracks[0], null)).toBe(true);
+describe("matchesGenres", () => {
+  it("filters by selected genres", () => {
+    expect(matchesGenres(tracks[2], ["Rock"])).toBe(true);
+    expect(matchesGenres(tracks[0], ["Rock"])).toBe(false);
+    expect(matchesGenres(tracks[0], [])).toBe(true);
+  });
+
+  it("matches any of selected genres", () => {
+    expect(matchesGenres(tracks[0], ["Pop", "Metal"])).toBe(true);
+    expect(matchesGenres(tracks[2], ["Pop", "Metal"])).toBe(true);
   });
 });
 
@@ -129,8 +139,8 @@ describe("hasActiveFilters", () => {
     expect(
       hasActiveFilters({
         searchQuery: "",
-        selectedAuthor: null,
-        selectedGenre: null,
+        selectedAuthors: [],
+        selectedGenres: [],
         sortOrder: "default",
       }),
     ).toBe(false);
@@ -138,8 +148,8 @@ describe("hasActiveFilters", () => {
     expect(
       hasActiveFilters({
         searchQuery: "el",
-        selectedAuthor: null,
-        selectedGenre: null,
+        selectedAuthors: [],
+        selectedGenres: [],
         sortOrder: "default",
       }),
     ).toBe(true);
@@ -150,20 +160,31 @@ describe("filterTracks", () => {
   it("combines search, author, genre and sort", () => {
     const result = filterTracks(tracks, {
       searchQuery: "t",
-      selectedAuthor: "Bob",
-      selectedGenre: "Rock",
+      selectedAuthors: ["Bob"],
+      selectedGenres: ["Rock"],
       sortOrder: "older",
     });
 
     expect(result.map((track) => track._id)).toEqual([2]);
   });
 
+  it("filters by multiple authors", () => {
+    const result = filterTracks(tracks, {
+      searchQuery: "",
+      selectedAuthors: ["Alice", "Bob"],
+      selectedGenres: [],
+      sortOrder: "default",
+    });
+
+    expect(result.map((track) => track._id)).toEqual([1, 2, 3]);
+  });
+
   it("returns all tracks when filters are empty", () => {
     expect(
       filterTracks(tracks, {
         searchQuery: "",
-        selectedAuthor: null,
-        selectedGenre: null,
+        selectedAuthors: [],
+        selectedGenres: [],
         sortOrder: "default",
       }),
     ).toHaveLength(3);
@@ -173,8 +194,8 @@ describe("filterTracks", () => {
     expect(
       filterTracks(tracks, {
         searchQuery: "zzz",
-        selectedAuthor: null,
-        selectedGenre: null,
+        selectedAuthors: [],
+        selectedGenres: [],
         sortOrder: "default",
       }),
     ).toEqual([]);

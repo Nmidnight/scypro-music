@@ -24,14 +24,8 @@ import {
   toggleShuffle,
 } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { formatDuration } from "@/utils/formatDuration";
 import styles from "./playerBar.module.css";
-
-function formatTime(seconds: number) {
-  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
 
 export default function PlayerBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -119,30 +113,25 @@ export default function PlayerBar() {
     };
   }, [currentTrack?._id]);
 
-  const displayDuration =
-    Number.isFinite(duration) && duration > 0
-      ? duration
-      : (currentTrack?.duration_in_seconds ?? 0);
-
-  const seekDuration =
+  const trackDuration =
     Number.isFinite(duration) && duration > 0
       ? duration
       : (currentTrack?.duration_in_seconds ?? 0);
 
   const progressRatio =
-    seekDuration > 0 ? Math.min(1, Math.max(0, currentTime / seekDuration)) : 0;
+    trackDuration > 0 ? Math.min(1, Math.max(0, currentTime / trackDuration)) : 0;
 
   const handleProgressPointer = useCallback(
     (clientX: number) => {
       const bar = progressRef.current;
       const audio = audioRef.current;
-      if (!bar || !audio || !seekDuration || seekDuration <= 0) return;
+      if (!bar || !audio || !trackDuration || trackDuration <= 0) return;
       const rect = bar.getBoundingClientRect();
       const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-      audio.currentTime = ratio * seekDuration;
-      setCurrentTime(ratio * seekDuration);
+      audio.currentTime = ratio * trackDuration;
+      setCurrentTime(ratio * trackDuration);
     },
-    [seekDuration],
+    [trackDuration],
   );
 
   const handleProgressClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -153,9 +142,9 @@ export default function PlayerBar() {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
     const audio = audioRef.current;
-    if (!audio || !seekDuration) return;
-    const delta = seekDuration * 0.05 * (event.key === "ArrowRight" ? 1 : -1);
-    const next = Math.min(seekDuration, Math.max(0, audio.currentTime + delta));
+    if (!audio || !trackDuration) return;
+    const delta = trackDuration * 0.05 * (event.key === "ArrowRight" ? 1 : -1);
+    const next = Math.min(trackDuration, Math.max(0, audio.currentTime + delta));
     audio.currentTime = next;
     setCurrentTime(next);
   };
@@ -178,8 +167,8 @@ export default function PlayerBar() {
       />
       <div className={styles.progressSection}>
         <div className={styles.progressTimes}>
-          <span className={styles.timeText}>{formatTime(currentTime)}</span>
-          <span className={styles.timeText}>{formatTime(displayDuration)}</span>
+          <span className={styles.timeText}>{formatDuration(currentTime)}</span>
+          <span className={styles.timeText}>{formatDuration(trackDuration)}</span>
         </div>
         <div
           ref={progressRef}
@@ -187,7 +176,7 @@ export default function PlayerBar() {
           role="slider"
           tabIndex={0}
           aria-valuemin={0}
-          aria-valuemax={Math.max(1, Math.round(displayDuration))}
+          aria-valuemax={Math.max(1, Math.round(trackDuration))}
           aria-valuenow={Math.round(currentTime)}
           aria-label="Прогресс воспроизведения"
           onClick={handleProgressClick}

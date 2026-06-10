@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 
 import CentralBlock from "@/components/centralBlock/centralBlock";
-import { getTracks, setPlaylist } from "@/store/features/trackSlice";
+import { useSyncPlaylist } from "@/hooks/useSyncPlaylist";
+import { getTracks } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function HomePage() {
@@ -17,11 +18,7 @@ export default function HomePage() {
     dispatch(getTracks());
   }, [dispatch, userId]);
 
-  useEffect(() => {
-    if (allTracks.length > 0) {
-      dispatch(setPlaylist(allTracks));
-    }
-  }, [allTracks, dispatch]);
+  useSyncPlaylist(allTracks);
 
   return (
     <CentralBlock

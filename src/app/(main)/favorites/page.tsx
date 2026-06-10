@@ -1,13 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 
 import AuthGuard from "@/components/authGuard/authGuard";
 import CentralBlock from "@/components/centralBlock/centralBlock";
-import {
-  fetchFavoriteTracks,
-  setPlaylist,
-} from "@/store/features/trackSlice";
+import { useSyncPlaylist } from "@/hooks/useSyncPlaylist";
+import { fetchFavoriteTracks } from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 function FavoritesContent() {
@@ -26,18 +24,12 @@ function FavoritesContent() {
     loadFavorites();
   }, [loadFavorites]);
 
-  const tracks = useMemo(() => favoriteTracks, [favoriteTracks]);
-
-  useEffect(() => {
-    if (tracks.length > 0) {
-      dispatch(setPlaylist(tracks));
-    }
-  }, [dispatch, tracks]);
+  useSyncPlaylist(favoriteTracks);
 
   return (
     <CentralBlock
       title="Мои треки"
-      tracks={tracks}
+      tracks={favoriteTracks}
       isLoading={isFavoritesLoading}
       error={favoritesError}
     />
