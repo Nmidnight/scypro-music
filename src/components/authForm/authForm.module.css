@@ -1,0 +1,132 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #383838;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 20px;
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 366px;
+  min-height: 439px;
+  padding: 43px 47px;
+  background-color: #ffffff;
+  border: 1px solid #d0cece;
+  border-radius: 12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 43px;
+  width: 140px;
+  height: 21px;
+}
+
+.logoImage {
+  width: 100%;
+  height: auto;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-bottom: 38px;
+  border: none;
+  border-bottom: 1px solid #d0cece;
+  padding: 8px 1px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #000000;
+}
+
+.input::placeholder {
+  color: #d0cece;
+}
+
+.input:focus {
+  outline: none;
+  border-bottom: 1px solid #580ea2;
+}
+
+.error {
+  width: 100%;
+  margin-top: -22px;
+  margin-bottom: 18px;
+  color: #db0030;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.primaryBtn {
+  width: 100%;
+  height: 52px;
+  margin-top: 22px;
+  background-color: #580ea2;
+  border: none;
+  border-radius: 6px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  background-color: #3f007d;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  margin-top: 16px;
+  background-color: #ffffff;
+  border: 1px solid #d0cece;
+  border-radius: 6px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #000000;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease-in-out,
+    color 0.25s ease-in-out;
+}
+
+.secondaryBtn:hover {
+  background-color: #f4f5f6;
+  border-color: #580ea2;
+  color: #580ea2;
+}

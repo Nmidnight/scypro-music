@@ -7,27 +7,68 @@
 }
 
 .bar {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
-  background: rgba(28, 28, 28, 0.5);
+  z-index: 50;
+  background: #181818;
+  border-top: 1px solid #2e2e2e;
+  box-sizing: border-box;
 }
 
-.content {
-  display: -webkit-box;
-  display: -ms-flexbox;
+.progressSection {
+  width: 100%;
+  padding: 8px 0 12px;
+  box-sizing: border-box;
+}
+
+.progressTimes {
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.timeText {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #696969;
+  font-variant-numeric: tabular-nums;
 }
 
 .playerProgress {
   width: 100%;
-  height: 5px;
+  height: 6px;
   background: #2e2e2e;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+
+.playerProgress:focus-visible {
+  box-shadow: 0 0 0 2px rgba(173, 97, 255, 0.6);
+}
+
+.playerProgressFill {
+  height: 100%;
+  background: #ad61ff;
+  border-radius: 0;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+.modeActive .btnRepeatSvg path,
+.modeActive .btnShuffleSvg path {
+  fill: #ad61ff;
 }
 
 .playerBlock {
@@ -58,6 +99,8 @@
   -webkit-box-pack: start;
   -ms-flex-pack: start;
   justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
 }
 
 .volumeBlock {
@@ -68,7 +111,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 92px 0 0;
+  padding: 0;
 }
 
 .controls {
@@ -79,7 +122,7 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
-  padding: 0 27px 0 31px;
+  padding: 0 27px 0 0;
 }
 
 .btnPrev,
@@ -94,6 +137,15 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.btnPrev:disabled,
+.btnNext:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .btnPrev {
@@ -137,6 +189,7 @@
 
 .btnRepeat {
   margin-right: 24px;
+  cursor: pointer;
 }
 
 .btnRepeatSvg {
@@ -153,6 +206,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .btnShuffleSvg {
@@ -199,10 +253,17 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
   flex-direction: row;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .trackContain {
-  width: auto;
+  flex: 1;
+  min-width: 0;
+  max-width: 345px;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: auto 1fr;
@@ -244,7 +305,8 @@
   grid-row: 1;
   grid-column: 2;
   grid-area: author;
-  min-width: 49px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .trackAuthorLink {
@@ -264,7 +326,8 @@
   grid-row: 2;
   grid-column: 2;
   grid-area: album;
-  min-width: 49px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .trackAlbumLink {
@@ -291,7 +354,8 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-left: 26%;
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 
 .likeSvg {
@@ -303,6 +367,11 @@
 
 .dislikeSpaced {
   margin-left: 28.5px;
+}
+
+.actionDisabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .dislikeSvg {

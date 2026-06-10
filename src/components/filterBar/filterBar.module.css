@@ -1,0 +1,120 @@
+.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 51px;
+}
+
+.filterTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  margin-right: 15px;
+}
+
+.buttonWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  border: 1px solid #ffffff;
+  border-radius: 60px;
+  padding: 6px 20px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.active,
+.buttonWithSelection {
+  border-color: #ad61ff;
+  color: #ad61ff;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background-color: #ad61ff;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.filterWrapper {
+  position: relative;
+  margin-right: 10px;
+}
+
+.filterWrapper:last-child {
+  margin-right: 0;
+}
+
+.filterDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  padding: 34px;
+  border-radius: 12px;
+  background-color: #313131;
+  z-index: 10;
+}
+
+.filterList {
+  color: #ffffff;
+  display: flex;
+  gap: 28px;
+  max-height: 237px;
+  overflow-y: auto;
+  flex-direction: column;
+  width: max-content;
+  max-width: 248px;
+}
+
+.filterItem {
+  font-family: inherit;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.filterItem:hover {
+  color: #d9b6ff;
+}
+
+.filterItemActive {
+  color: #ad61ff;
+}
+
+.filterList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filterList::-webkit-scrollbar-track {
+  background-color: rgba(75, 73, 73, 1);
+}
+
+.filterList::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+}

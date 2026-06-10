@@ -2,16 +2,15 @@
 
 import classNames from "classnames";
 
-import type { Track } from "@/mocks/tracks";
-import { setCurrentTrack } from "@/store/features/trackSlice";
+import LikeButton from "@/components/likeButton/likeButton";
+import type { Track } from "@/types";
+import {
+  selectCurrentTrack,
+  setCurrentTrack,
+} from "@/store/features/trackSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { formatDuration } from "@/utils/formatDuration";
 import styles from "./trackItem.module.css";
-
-function formatDuration(totalSeconds: number) {
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
 
 type TrackItemProps = {
   track: Track;
@@ -19,7 +18,7 @@ type TrackItemProps = {
 
 export default function TrackItem({ track }: TrackItemProps) {
   const dispatch = useAppDispatch();
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const currentTrack = useAppSelector(selectCurrentTrack);
   const isPlaying = useAppSelector((state) => state.tracks.isPlaying);
 
   const isCurrent = currentTrack?._id === track._id;
@@ -64,9 +63,7 @@ export default function TrackItem({ track }: TrackItemProps) {
           <span className={styles.trackAlbumLink}>{track.album}</span>
         </div>
         <div className={styles.trackTime}>
-          <svg className={styles.trackTimeSvg}>
-            <use href="/img/icon/sprite.svg#icon-like"></use>
-          </svg>
+          <LikeButton track={track} variant="list" />
           <span className={styles.trackTimeText}>
             {formatDuration(track.duration_in_seconds)}
           </span>

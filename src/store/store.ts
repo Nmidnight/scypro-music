@@ -1,13 +1,22 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
+import { authReducer } from "@/store/features/authSlice";
+import { toastReducer } from "@/store/features/toastSlice";
 import { trackSliceReducer } from "@/store/features/trackSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: combineReducers({
       tracks: trackSliceReducer,
+      auth: authReducer,
+      toast: toastReducer,
     }),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: { warnAfter: 128 },
+        immutableCheck: { warnAfter: 128 },
+      }),
   });
 };
 

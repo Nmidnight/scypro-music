@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Provider } from "react-redux";
 
+import { hydrateAuthFromStorage } from "@/store/features/authSlice";
 import { makeStore } from "./store";
 
 export default function ReduxProvider({
@@ -11,6 +12,10 @@ export default function ReduxProvider({
   children: React.ReactNode;
 }) {
   const store = useMemo(() => makeStore(), []);
+
+  useEffect(() => {
+    store.dispatch(hydrateAuthFromStorage());
+  }, [store]);
 
   return <Provider store={store}>{children}</Provider>;
 }
